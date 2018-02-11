@@ -7,7 +7,7 @@
   vars:
     instance_ids:
       - 'i-xxxxxx'
-     region: ap-southeast-1
+    region: ap-southeast-1
   tasks:
   - ec2:
       instance_ids: '{{ instance_ids }}'
