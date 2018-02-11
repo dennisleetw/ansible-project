@@ -1,0 +1,15 @@
+---
+# Basic provisioning example
+- name: Create AWS resources
+  hosts: localhost
+  connection: local
+  gather_facts: False
+  tasks:
+  - ec2:
+      key_name: key1
+      instance_type: t2.micro
+      image: ami-5ae89f26
+      wait: yes
+      count: 3
+      vpc_subnet_id: subnet-2c455a5a
+      assign_public_ip: yes
