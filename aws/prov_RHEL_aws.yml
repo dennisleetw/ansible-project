@@ -16,6 +16,6 @@
       image: ami-5ae89f26
       wait: yes
       count: 1
-      region: region={{ region }}
+      region: {{ region }}
       vpc_subnet_id: subnet-2c455a5a
       assign_public_ip: yes
