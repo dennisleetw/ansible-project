@@ -4,12 +4,18 @@
   hosts: localhost
   connection: local
   gather_facts: False
+  vars:
+    instance_ids:
+      - 'i-xxxxxx'
+     region: ap-southeast-1
   tasks:
   - ec2:
+      instance_ids: '{{ instance_ids }}'
       key_name: key1
       instance_type: t2.micro
       image: ami-5ae89f26
       wait: yes
-      count: 3
+      count: 1
+      region: region={{ region }}
       vpc_subnet_id: subnet-2c455a5a
       assign_public_ip: yes
