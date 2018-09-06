@@ -18,9 +18,7 @@
     os_subnet_name: "{{ os_project }}"
     os_subnet_cidr: "192.168.0.0/24"
     os_router_name: "{{ os_router }}"
-    # Due to the sensitive json formatting required by the OpenStack API, standard Ansible list cannot be used for dns_nameserv
-ers
-  tasks:
+   tasks:
     - name: "Obtain admin token from Identity service"
       uri:
         url: "{{ os_admin_auth_url }}/auth/tokens"
