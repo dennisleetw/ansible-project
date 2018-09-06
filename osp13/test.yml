@@ -18,7 +18,7 @@
     os_subnet_name: "{{ os_project }}"
     os_subnet_cidr: "192.168.0.0/24"
     os_router_name: "{{ os_router }}"
-   tasks:
+  tasks:
     - name: "Obtain admin token from Identity service"
       uri:
         url: "{{ os_admin_auth_url }}/auth/tokens"
