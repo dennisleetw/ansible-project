@@ -1,0 +1,94 @@
+---
+- hosts: localhost
+  gather_facts: false
+  vars:
+    os_controller: "172.17.5.250"
+    os_admin_auth_url: "http://{{ os_controller }}:5000/v3"
+    os_admin_project: "admin"
+    os_admin_username: "admin"
+    os_admin_password: "ammC2dsn8UNNbqexXBadXwnEa"
+    os_auth_url: "http://{{ os_controller }}:35357/v3"
+    os_networking_url: "http://{{ os_controller }}:9696/v2.0"
+    os_username: "admin"
+    os_password: "ammC2dsn8UNNbqexXBadXwnEa"
+    os_project: "admin"
+    os_router: "myrouter"
+    os_security_group: "default"
+    os_network_name: "{{ os_project }}"
+    os_subnet_name: "{{ os_project }}"
+    os_subnet_cidr: "192.168.0.0/24"
+    os_router_name: "{{ os_router }}"
+    # Due to the sensitive json formatting required by the OpenStack API, standard Ansible list cannot be used for dns_nameserv
+ers
+  tasks:
+    - name: "Obtain admin token from Identity service"
+      uri:
+        url: "{{ os_admin_auth_url }}/auth/tokens"
+        method: POST
+        body_format: json
+        body: '
+          { "auth": {
+              "identity": {
+                "methods": ["password"],
+                "password": {
+                  "user": {
+                    "domain": {
+                      "id": "default"
+                    },
+                    "name": "{{ os_admin_username }}",
+                    "password": "{{ os_admin_password }}"
+                  }
+                }
+              },
+              "scope": {
+                "project": {
+                  "domain": {
+                    "id": "default"
+                  },
+                  "name": "{{ os_admin_project }}"
+                }
+              }
+            }
+          }'
+        status_code: 201
+        HEADER_Content-Type: "application/json"
+      register: keystone_admin_response
+
+    - debug:
+        var: keystone_admin_response
+      when: debug is defined
+
+    - name: "Set OpenStack token fact"
+      set_fact:
+        os_token: "{{ keystone_admin_response.x_subject_token }}"
+
+    - name: "Determine if router exists"
+      uri:
+        url: "{{ os_networking_url }}/routers?name={{ os_router_name }}"
+        method: GET
+        status_code: 200
+        HEADER_X-Auth-Token: "{{ os_token }}"
+      register: get_routers
+
+    - debug:
+        var: get_routers
+      when: debug is defined
+
+    - debug:
+        var: os_router_id
+      when: debug is defined
+
+    - name: "Create router if not found"
+      uri:
+        url: "{{ os_networking_url }}/routers"
+        method: POST
+        status_code: 201
+        HEADER_X-Auth-Token: "{{ os_token }}"
+        body_format: json
+        body: '
+          { "router": {
+              "name": "{{ os_router_name }}"
+            }
+          }'
+      register: router_create
+      when: os_router_id is undefined
