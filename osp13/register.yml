@@ -1,0 +1,56 @@
+---
+- hosts: localhost
+  gather_facts: false
+  vars:
+    os_controller: "192.168.1.131"
+    os_admin_auth_url: "http://{{ os_controller }}:5000/v3"
+    os_admin_project: "admin"
+    os_admin_username: "admin"
+    os_admin_password: "password"
+    os_auth_url: "http://{{ os_controller }}:35357/v3"
+    os_networking_url: "http://{{ os_controller }}:9696/v2.0"
+    os_username: "ansibletest-user1"
+    os_password: "password"
+    os_project: "ansibletest-project1"
+    os_security_group: "default"
+    os_network_name: "{{ os_project }}"
+    os_subnet_name: "{{ os_project }}"
+    os_subnet_cidr: "192.168.0.0/24"
+    os_router_name: "{{ os_project }}"
+    # Due to the sensitive json formatting required by the OpenStack API, standard Ansible list cannot be used for dns_nameservers
+    os_dns_nameserver1: "192.168.1.31"
+    os_dns_nameserver2: "192.168.1.32"
+  tasks:
+    - name: "Obtain admin token from Identity service"
+      uri:
+        url: "{{ os_admin_auth_url }}/auth/tokens"
+        method: POST
+        body_format: json
+        body: '
+          { "auth": {
+              "identity": {
+                "methods": ["password"],
+                "password": {
+                  "user": {
+                    "domain": {
+                      "id": "default"
+                    },
+                    "name": "{{ os_admin_username }}",
+                    "password": "{{ os_admin_password }}"
+                  }
+                }
+              },
+              "scope": {
+                "project": {
+                  "domain": {
+                    "id": "default"
+                  },
+                  "name": "{{ os_admin_project }}"
+                }
+              }
+            }
+          }'
+        status_code: 201
+        HEADER_Content-Type: "application/json"
+      register: keystone_admin_response
+
