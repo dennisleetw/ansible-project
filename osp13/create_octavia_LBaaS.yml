@@ -8,7 +8,7 @@
     os_admin_username: "admin"
     os_admin_password: "ammC2dsn8UNNbqexXBadXwnEa"
     os_auth_url: "http://{{ os_controller }}:35357/v3"
-    os_octavia_url: "http://{{ os_controller }}:9876/v2/lbaas/loadbalancers"
+    os_octavia_url: "http://{{ os_controller }}:9876/v2.0/lbaas/loadbalancers"
     os_username: "admin"
     os_password: "ammC2dsn8UNNbqexXBadXwnEa"
     os_project_id: "7fa45381a19848f7a8c9ff0edfc245e6"
