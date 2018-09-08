@@ -1,0 +1,101 @@
+---
+- hosts: localhost
+  gather_facts: false
+  vars:
+    os_controller: "{{ ipaddress }}"
+    os_admin_auth_url: "http://{{ os_controller }}:5000/v3"
+    os_admin_project: "admin"
+    os_admin_username: "admin"
+    os_admin_password: "ammC2dsn8UNNbqexXBadXwnEa"
+    os_auth_url: "http://{{ os_controller }}:35357/v3"
+    os_octavia_url: "http://{{ os_controller }}:9876/v2/lbaas/loadbalancers"
+    os_username: "admin"
+    os_password: "ammC2dsn8UNNbqexXBadXwnEa"
+    os_project_id: "7fa45381a19848f7a8c9ff0edfc245e6"
+    os_security_group: "default"
+    vip_subnet_id: "4a98105c-932f-4c3a-a023-0201873fa3e"
+    vip_address: "10.10.10.44"
+    lb_name: "octavia2"
+  tasks:
+    - name: "Obtain admin token from Identity service"
+      uri:
+        url: "{{ os_admin_auth_url }}/auth/tokens"
+        method: POST
+        body_format: json
+        body: '
+          { "auth": {
+              "identity": {
+                "methods": ["password"],
+                "password": {
+                  "user": {
+                    "domain": {
+                      "id": "default"
+                    },
+                    "name": "{{ os_admin_username }}",
+                    "password": "{{ os_admin_password }}"
+                  }
+                }
+              },
+              "scope": {
+                "project": {
+                  "domain": {
+                    "id": "default"
+                  },
+                  "name": "{{ os_admin_project }}"
+                }
+              }
+            }
+          }'
+        status_code: 201
+        HEADER_Content-Type: "application/json"
+      register: keystone_admin_response
+
+    - debug:
+        var: keystone_admin_response
+      when: debug is defined
+
+    - name: "Set OpenStack token fact"
+      set_fact:
+        os_token: "{{ keystone_admin_response.x_subject_token }}"
+
+    - name: "Determine if LB exists"
+      uri:
+        url: "{{ os_octavia_url }}/routers?name={{ os_router_name }}"
+        method: GET
+        status_code: 200
+        HEADER_X-Auth-Token: "{{ os_token }}"
+      register: get_routers
+
+    - debug:
+        var: get_routers
+      when: debug is defined
+
+    - debug:
+        var: os_router_id
+      when: debug is defined
+
+    - name: "Create LB if not found"
+      uri:
+        url: "{{ os_octavia_url }}"
+        method: POST
+        status_code: 201
+        HEADER_X-Auth-Token: "{{ os_token }}"
+        body_format: json
+        body: '
+          { "router": {
+              "name": "{{ os_router_name }}"
+            }
+          }'
+          {
+    "loadbalancer": {
+        "description": "Octavia LB",
+        "admin_state_up": true,
+        "project_id": "{{ os_project_id }}",
+        "vip_subnet_id": "{{ vip_subnet_id }}",
+        "vip_address": "{{ vip_address }}",
+        "provider": "octavia",
+        "name": "{{ lb_name }}"
+    }
+}'
+      register: router_create
+      when: os_router_id is undefined
