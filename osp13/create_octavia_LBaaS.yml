@@ -58,22 +58,6 @@
       set_fact:
         os_token: "{{ keystone_admin_response.x_subject_token }}"
 
-    - name: "Determine if LB exists"
-      uri:
-        url: "{{ os_octavia_url }}/routers?name={{ os_router_name }}"
-        method: GET
-        status_code: 200
-        HEADER_X-Auth-Token: "{{ os_token }}"
-      register: get_routers
-
-    - debug:
-        var: get_routers
-      when: debug is defined
-
-    - debug:
-        var: os_router_id
-      when: debug is defined
-
     - name: "Create LB if not found"
       uri:
         url: "{{ os_octavia_url }}"
@@ -82,12 +66,8 @@
         HEADER_X-Auth-Token: "{{ os_token }}"
         body_format: json
         body: '
-          { "router": {
-              "name": "{{ os_router_name }}"
-            }
-          }'
           {
-    "loadbalancer": {
+        "loadbalancer": {
         "description": "Octavia LB",
         "admin_state_up": true,
         "project_id": "{{ os_project_id }}",
@@ -95,7 +75,6 @@
         "vip_address": "{{ vip_address }}",
         "provider": "octavia",
         "name": "{{ lb_name }}"
-    }
-}'
-      register: router_create
-      when: os_router_id is undefined
+          }
+        }'
+      register: lb_create
