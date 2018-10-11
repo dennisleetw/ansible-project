@@ -15,7 +15,7 @@
     os_security_group: "default"
     vip_subnet_id: "c91d1062-3762-4e1d-bba0-df49b05a296a"
     vip_address: "10.10.10.44"
-    lb_name: "octavia2"
+    lb_name: "{{ lbname }}"
   tasks:
     - name: "Obtain admin token from Identity service"
       uri:
