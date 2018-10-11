@@ -4,7 +4,7 @@
   vars:
     os_controller: "localhost"
     os_admin_auth_url: "http://{{ os_controller }}:5000/v3"
-    os_admin_project: "admin"
+    os_admin_project: "{{ project }}"
     os_admin_username: "admin"
     os_admin_password: "8c9GpR7wyHAgZw7Jyd2zURZ6c"
     os_auth_url: "http://{{ os_controller }}:35357/v3"
@@ -14,7 +14,7 @@
     os_project_id: "3395d253910d4d6eb9759bde0c707738"
     os_security_group: "default"
     vip_subnet_id: "c91d1062-3762-4e1d-bba0-df49b05a296a"
-    vip_address: "10.10.10.44"
+    vip_address: "{{ vipaddress }}"
     lb_name: "{{ lbname }}"
   tasks:
     - name: "Obtain admin token from Identity service"
