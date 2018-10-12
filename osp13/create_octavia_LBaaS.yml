@@ -70,7 +70,7 @@
         "loadbalancer": {
         "description": "Octavia LB",
         "admin_state_up": true,
-        "listeners": "Listener 1",
+        "listeners": "27abafac-253a-4163-95c8-8ebf09944775",
         "project_id": "{{ os_project_id }}",
         "vip_subnet_id": "{{ vip_subnet_id }}",
         "vip_address": "{{ vip_address }}",
