@@ -1,0 +1,142 @@
+---
+- hosts: localhost
+  gather_facts: false
+  vars:
+    os_controller: "localhost"
+    os_admin_auth_url: "http://{{ os_controller }}:5000/v3"
+    os_admin_project: "{{ project }}"
+    os_admin_username: "admin"
+    os_admin_password: "8c9GpR7wyHAgZw7Jyd2zURZ6c"
+    os_auth_url: "http://{{ os_controller }}:35357/v3"
+    os_octavia_url: "http://{{ os_controller }}:9876/v2.0/lbaas/loadbalancers"
+    os_username: "admin"
+    os_password: "8c9GpR7wyHAgZw7Jyd2zURZ6c"
+    os_project_id: "3395d253910d4d6eb9759bde0c707738"
+    os_security_group: "default"
+    vip_subnet_id: "c91d1062-3762-4e1d-bba0-df49b05a296a"
+    vip_address: "{{ vipaddress }}"
+    lb_name: "{{ lbname }}"
+  tasks:
+    - name: "Obtain admin token from Identity service"
+      uri:
+        url: "{{ os_admin_auth_url }}/auth/tokens"
+        method: POST
+        body_format: json
+        body: '
+          { "auth": {
+              "identity": {
+                "methods": ["password"],
+                "password": {
+                  "user": {
+                    "domain": {
+                      "id": "default"
+                    },
+                    "name": "{{ os_admin_username }}",
+                    "password": "{{ os_admin_password }}"
+                  }
+                }
+              },
+              "scope": {
+                "project": {
+                  "domain": {
+                    "id": "default"
+                  },
+                  "name": "{{ os_admin_project }}"
+                }
+              }
+            }
+          }'
+        status_code: 201
+        HEADER_Content-Type: "application/json"
+      register: keystone_admin_response
+
+    - debug:
+        var: keystone_admin_response
+      when: debug is defined
+
+    - name: "Set OpenStack token fact"
+      set_fact:
+        os_token: "{{ keystone_admin_response.x_subject_token }}"
+
+    - name: "Create LB if not found"
+      uri:
+        url: "{{ os_octavia_url }}"
+        method: POST
+        status_code: 201
+        HEADER_X-Auth-Token: "{{ os_token }}"
+        body_format: json
+        body: '
+          {
+        "loadbalancer": {
+        "description": "Octavia LB",
+        "admin_state_up": true,
+        "listeners":  [
+            {
+                "name": "http_listener",
+                "protocol": "HTTP",
+                "protocol_port": 80,
+                "default_pool": {
+                    "name": "rr_pool",
+                    "protocol": "HTTP",
+                    "lb_algorithm": "ROUND_ROBIN",
+                    "healthmonitor": {
+                        "type": "HTTP",
+                        "delay": "3",
+                        "expected_codes": "200,201,202",
+                        "http_method": "GET",
+                        "max_retries": 2,
+                        "timeout": 1,
+                        "url_path": "/index.html"
+                    },
+                    "members": [
+                        {
+                            "address": "192.168.10.12",
+                            "protocol_port": 80
+                        },
+                        {
+                            "address": "192.168.10.10",
+                            "protocol_port": 80
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "http_listener",
+                "protocol": "HTTP",
+                "protocol_port": 80,
+                "default_pool": {
+                    "name": "http_pool"
+                }
+            }
+        ],
+        "pools": [
+            {
+                "name": "http_pool",
+                "protocol": "HTTP",
+                "lb_algorithm": "ROUND_ROBIN",
+                "healthmonitor": {
+                    "type": "HTTP",
+                    "delay": "3",
+                    "max_retries": 2,
+                    "timeout": 1
+                },
+                "members": [
+                    {
+                        "address": "192.168.10.12",
+                        "protocol_port": 80
+                    },
+                    {
+                        "address": "192.168.10.10",
+                        "protocol_port": 80
+                    }
+                ]
+            }
+        ],
+        "project_id": "{{ os_project_id }}",
+        "vip_subnet_id": "{{ vip_subnet_id }}",
+        "vip_address": "{{ vip_address }}",
+        "provider": "octavia",
+        "name": "{{ lb_name }}"
+          }
+        }'
+      register: lb_create
