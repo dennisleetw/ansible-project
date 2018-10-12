@@ -109,7 +109,7 @@
         "provider": "octavia",
         
         "floatingip": {
-        "floating_network_id": "fd911675-6507-4621-b750-03bf018c3993",
+        "floating_network_id": "fd911675-6507-4621-b750-03bf018c3993"
         },
         "name": "{{ lb_name }}"
           }
