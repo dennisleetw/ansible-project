@@ -73,24 +73,6 @@
         "listeners":  [
             {
                 "name": "Listener 1"
-                    "members": [
-                        {
-                            "address": "192.168.10.12",
-                            "protocol_port": 80
-                        },
-                        {
-                            "address": "192.168.10.10",
-                            "protocol_port": 80
-                        }
-                    ]
-            },
-            {
-                "name": "http_listener",
-                "protocol": "HTTP",
-                "protocol_port": 80,
-                "default_pool": {
-                    "name": "http_pool"
-                }
             }
         ],
         "pools": [
