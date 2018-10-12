@@ -57,7 +57,7 @@
 
     - name: "Create LB if not found"
       uri:
-        url: "{{ os_octavia_url }}/303d768b-80fd-4d91-b2ad-fd36f1fd7997"
+        url: "{{ os_octavia_url }}/{{ octavia_id }}"
         method: DELETE
         status_code: 204
         HEADER_X-Auth-Token: "{{ os_token }}"
