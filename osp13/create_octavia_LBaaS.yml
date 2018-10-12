@@ -72,21 +72,7 @@
         "admin_state_up": true,
         "listeners":  [
             {
-                "name": "http_listener",
-                "protocol": "HTTP",
-                "protocol_port": 80,
-                "default_pool": {
-                    "name": "rr_pool",
-                    "protocol": "HTTP",
-                    "lb_algorithm": "ROUND_ROBIN",
-                    "healthmonitor": {
-                        "type": "HTTP",
-                        "delay": "3",
-                        "expected_codes": "200,201,202",
-                        "http_method": "GET",
-                        "max_retries": 2,
-                        "timeout": 1,
-                        "url_path": "/index.html"
+                "name": "Listener 1"
                     },
                     "members": [
                         {
