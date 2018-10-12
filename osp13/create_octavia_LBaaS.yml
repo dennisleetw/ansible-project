@@ -86,15 +86,17 @@
                         "http_method": "GET",
                         "max_retries": 2,
                         "timeout": 1,
-                        "url_path": "/index.html"
+                        "url_path": "/"
                     },
                     "members": [
                         {
                             "address": "192.168.10.12",
+                            "subnet_id": "a29e3367-3beb-4d29-a8b7-a51be4582113",
                             "protocol_port": 80
                         },
                         {
                             "address": "192.168.10.10",
+                            "subnet_id": "a29e3367-3beb-4d29-a8b7-a51be4582113",
                             "protocol_port": 80
                         }
                     ]
