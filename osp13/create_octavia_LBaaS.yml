@@ -74,7 +74,7 @@
             {
                 "name": "http_listener",
                 "protocol": "HTTP",
-                "protocol_port": 8080,
+                "protocol_port": 8081,
                 "default_pool": {
                     "name": "rr_pool",
                     "protocol": "HTTP",
@@ -91,11 +91,11 @@
                     "members": [
                         {
                             "address": "192.168.10.12",
-                            "protocol_port": 8080
+                            "protocol_port": 8081
                         },
                         {
                             "address": "192.168.10.10",
-                            "protocol_port": 8080
+                            "protocol_port": 8081
                         }
                     ]
                 }
@@ -103,7 +103,7 @@
             {
                 "name": "http_listener",
                 "protocol": "HTTP",
-                "protocol_port": 8080,
+                "protocol_port": 8081,
                 "default_pool": {
                     "name": "http_pool"
                 }
