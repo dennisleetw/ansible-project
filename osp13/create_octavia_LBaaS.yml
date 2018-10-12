@@ -97,7 +97,41 @@
                             "address": "192.168.10.10",
                             "protocol_port": 80
                         }
-                    ],
+                    ]
+                }
+            },
+            {
+                "name": "http_listener",
+                "protocol": "HTTP",
+                "protocol_port": 80,
+                "default_pool": {
+                    "name": "http_pool"
+                }
+            }
+        ],
+        "pools": [
+            {
+                "name": "http_pool",
+                "protocol": "HTTP",
+                "lb_algorithm": "ROUND_ROBIN",
+                "healthmonitor": {
+                    "type": "HTTP",
+                    "delay": "3",
+                    "max_retries": 2,
+                    "timeout": 1
+                },
+                "members": [
+                    {
+                        "address": "192.168.10.12",
+                        "protocol_port": 80
+                    },
+                    {
+                        "address": "192.168.10.10",
+                        "protocol_port": 80
+                    }
+                ]
+            }
+        ],
         "project_id": "{{ os_project_id }}",
         "vip_subnet_id": "{{ vip_subnet_id }}",
         "vip_address": "{{ vip_address }}",
