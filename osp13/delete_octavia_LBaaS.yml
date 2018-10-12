@@ -1,0 +1,64 @@
+---
+- hosts: localhost
+  gather_facts: false
+  vars:
+    os_controller: "localhost"
+    os_admin_auth_url: "http://{{ os_controller }}:5000/v3"
+    os_admin_project: "{{ project }}"
+    os_admin_username: "admin"
+    os_admin_password: "8c9GpR7wyHAgZw7Jyd2zURZ6c"
+    os_auth_url: "http://{{ os_controller }}:35357/v3"
+    os_octavia_url: "http://{{ os_controller }}:9876/v2.0/lbaas/loadbalancers"
+    os_username: "admin"
+    os_password: "8c9GpR7wyHAgZw7Jyd2zURZ6c"
+    os_project_id: "3395d253910d4d6eb9759bde0c707738"
+    os_security_group: "default"
+  tasks:
+    - name: "Obtain admin token from Identity service"
+      uri:
+        url: "{{ os_admin_auth_url }}/auth/tokens"
+        method: POST
+        body_format: json
+        body: '
+          { "auth": {
+              "identity": {
+                "methods": ["password"],
+                "password": {
+                  "user": {
+                    "domain": {
+                      "id": "default"
+                    },
+                    "name": "{{ os_admin_username }}",
+                    "password": "{{ os_admin_password }}"
+                  }
+                }
+              },
+              "scope": {
+                "project": {
+                  "domain": {
+                    "id": "default"
+                  },
+                  "name": "{{ os_admin_project }}"
+                }
+              }
+            }
+          }'
+        status_code: 201
+        HEADER_Content-Type: "application/json"
+      register: keystone_admin_response
+
+    - debug:
+        var: keystone_admin_response
+      when: debug is defined
+
+    - name: "Set OpenStack token fact"
+      set_fact:
+        os_token: "{{ keystone_admin_response.x_subject_token }}"
+
+    - name: "Create LB if not found"
+      uri:
+        url: "{{ os_octavia_url }}/303d768b-80fd-4d91-b2ad-fd36f1fd7997"
+        method: DELETE
+        status_code: 204
+        HEADER_X-Auth-Token: "{{ os_token }}"
+      register: lb_remove
