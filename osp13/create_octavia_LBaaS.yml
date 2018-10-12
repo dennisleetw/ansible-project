@@ -97,9 +97,7 @@
                             "address": "192.168.10.10",
                             "protocol_port": 80
                         }
-                    ]
-                }
-            },
+                    ],
         "project_id": "{{ os_project_id }}",
         "vip_subnet_id": "{{ vip_subnet_id }}",
         "vip_address": "{{ vip_address }}",
