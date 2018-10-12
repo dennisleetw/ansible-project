@@ -115,11 +115,11 @@
                 "members": [
                     {
                         "address": "192.168.10.12",
-                        "protocol_port": 8080
+                        "protocol_port": 80
                     },
                     {
                         "address": "192.168.10.10",
-                        "protocol_port": 8080
+                        "protocol_port": 80
                     }
                 ]
             }
