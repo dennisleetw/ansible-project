@@ -123,4 +123,4 @@
       register: info_port
 
     - debug: var=info_port
-      with_items: info_port.json.id
+      with_items: info_port.result
