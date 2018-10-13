@@ -134,6 +134,5 @@
         "floatingip": {
         "port_id": "{{ info_port.json.ports[0].id }}"
           }
-         }
         }'
-       register: set_floatip
+      register: set_floatip
