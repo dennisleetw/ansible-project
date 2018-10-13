@@ -122,4 +122,4 @@
       register: info_port
     - set_fact: login_resp=info_port
     - debug: var=login_resp
-        msg: "{{ login_resp.json.id }}"
+      msg: "{{ login_resp.json.id }}"
