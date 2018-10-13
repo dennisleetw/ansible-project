@@ -121,3 +121,6 @@
         return_content: yes
         HEADER_X-Auth-Token: "{{ os_token }}"
       register: info_port
+
+    - debug:
+      with_items: info_port.results
