@@ -123,4 +123,4 @@
       register: info_port
 
     - debug: var=info_port
-      with_items: info_port.result
+      with_items: info_port.result.info_port
