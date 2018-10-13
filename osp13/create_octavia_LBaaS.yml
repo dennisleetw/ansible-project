@@ -118,5 +118,6 @@
         url: "{{ os_neutron_url }}/ports?fixed_ips=10.10.10.88"
         method: GET
         status_code: 200
+        return_content: yes
         HEADER_X-Auth-Token: "{{ os_token }}"
       register: info_port
