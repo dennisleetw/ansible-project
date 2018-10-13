@@ -133,7 +133,7 @@
           {
         "floatingip": {
         "port_id": "{{ info_port.json.ports[0].id }}",
-        "floatingip": "ce889b78-3351-4623-b0f8-4df981478228"
+        "floatingip_id": "ce889b78-3351-4623-b0f8-4df981478228"
           }
         }'
       register: set_floatip
