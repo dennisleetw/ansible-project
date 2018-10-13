@@ -124,7 +124,7 @@
         msg: "{{ info_port.json.ports[0].id }}"
     - name: "assign floating ip"
       uri:
-        url: "{{ os_neutron_url }}/floatingips"
+        url: "{{ os_neutron_url }}/floatingips/ce889b78-3351-4623-b0f8-4df981478228"
         method: PUT
         status_code: 200
         HEADER_X-Auth-Token: "{{ os_token }}"
@@ -132,8 +132,7 @@
         body: '
           {
         "floatingip": {
-        "port_id": "{{ info_port.json.ports[0].id }}",
-        "floatingip_id": "ce889b78-3351-4623-b0f8-4df981478228"
+        "port_id": "{{ info_port.json.ports[0].id }}"
           }
         }'
       register: set_floatip
