@@ -121,4 +121,4 @@
         HEADER_X-Auth-Token: "{{ os_token }}"
       register: info_port
     - debug: var=info_port
-      msg: "{{ login_resp.json }}"
+      msg: "{{ info_port.json }}"
