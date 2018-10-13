@@ -122,5 +122,5 @@
         HEADER_X-Auth-Token: "{{ os_token }}"
       register: info_port
     
-    - debug: var=info_port
-      with_items: info_port.results
+    - debug:
+        msg: "{{ info_port.stdout_lines|grep \"id\" }}
