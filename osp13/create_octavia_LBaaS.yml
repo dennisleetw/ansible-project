@@ -9,6 +9,7 @@
     os_admin_password: "8c9GpR7wyHAgZw7Jyd2zURZ6c"
     os_auth_url: "http://{{ os_controller }}:35357/v3"
     os_octavia_url: "http://{{ os_controller }}:9876/v2.0/lbaas/loadbalancers"
+    os_neutron_url: "http://{{ os_controller }}:9696/v2.0"
     os_username: "admin"
     os_password: "8c9GpR7wyHAgZw7Jyd2zURZ6c"
     os_project_id: "3395d253910d4d6eb9759bde0c707738"
@@ -111,3 +112,11 @@
           }
         }'
       register: lb_create
+
+    - name: "get port"
+      uri:
+        url: "{{ os_neutron_url }}/ports?fixed_ips=10.10.10.88"
+        method: GET
+        status_code: 200
+        HEADER_X-Auth-Token: "{{ os_token }}"
+      register: info_port
