@@ -120,5 +120,6 @@
         status_code: 200
         HEADER_X-Auth-Token: "{{ os_token }}"
       register: info_port
-    - debug: var=info_port
-        msg: "{{ info_port.stdout_lines }}"
+    - set_fact: login_resp=info_port
+    - debug: var=login_resp
+        msg: "{{ login_resp.json.id }}"
