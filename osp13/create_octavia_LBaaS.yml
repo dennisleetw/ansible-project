@@ -115,7 +115,7 @@
 
     - name: "get port"
       uri:
-        url: "{{ os_neutron_url }}/ports?fixed_ips=10.10.10.88"
+        url: "{{ os_neutron_url }}/ports.json?fields=id&fixed_ips"
         method: GET
         status_code: 200
         return_content: yes
