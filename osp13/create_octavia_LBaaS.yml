@@ -17,6 +17,8 @@
     vip_subnet_id: "c91d1062-3762-4e1d-bba0-df49b05a296a"
     vip_address: "{{ vipaddress }}"
     lb_name: "{{ lbname }}"
+    http_listener: "{{ httplistener }}"
+    rr_pool: "{{ rrpool }}"
   tasks:
     - name: "Obtain admin token from Identity service"
       uri:
@@ -73,11 +75,11 @@
         "admin_state_up": true,
         "listeners":  [
             {
-                "name": "http_listener",
+                "name": "{{ http_listener }}",
                 "protocol": "HTTP",
                 "protocol_port": 80,
                 "default_pool": {
-                    "name": "rr_pool",
+                    "name": "{{ rr_pool }}",
                     "protocol": "HTTP",
                     "lb_algorithm": "ROUND_ROBIN",
                     "healthmonitor": {
