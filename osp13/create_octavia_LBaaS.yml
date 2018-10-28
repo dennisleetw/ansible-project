@@ -2,7 +2,7 @@
 - hosts: localhost
   gather_facts: false
   vars:
-    os_controller: "localhost"
+    os_controller: "172.17.5.250"
     os_admin_auth_url: "http://{{ os_controller }}:5000/v3"
     os_admin_project: "{{ project }}"
     os_admin_username: "admin"
