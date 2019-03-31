@@ -1,7 +1,7 @@
 ---
 openshift_openstack_clusterid: "openshift"
-openshift_openstack_public_dns_domain: "domainname.com"
-openshift_openstack_dns_nameservers: []
+openshift_openstack_public_dns_domain: "dennisleetw.com"
+openshift_openstack_dns_nameservers: [x.x.x.x]
 
 # # Used Hostnames
 # # - set custom hostnames for roles by uncommenting corresponding lines
@@ -183,9 +183,9 @@ openshift_openstack_pool_start: "192.168.99.3"
 openshift_openstack_pool_end: "192.168.99.254"
 
 ## Red Hat subscription using user/password
-rhsub_user: ''
-rhsub_pass: ''
-rhsub_pool: ''
+rhsub_user: 'xxx'
+rhsub_pass: 'xxx'
+rhsub_pool: 'xxx'
 # Or if using activation key:
 #rhsub_ak: '<ak>'
 #rhsub_orgid: '<orgid>'
@@ -196,14 +196,14 @@ rhsub_pool: ''
 openshift_openstack_external_nsupdate_keys:
   public:
     key_name: 'rndc-key'
-    key_secret: 'J9bUgNaOUmecbPICGPioNw=='
+    key_secret: 'xxx'
     key_algorithm: 'hmac-md5'
-    server: ''
+    server: 'x.x.x.x'
   private:
     key_name: 'rndc-key'
-    key_secret: 'J9bUgNaOUmecbPICGPioNw=='
+    key_secret: 'xxx'
     key_algorithm: 'hmac-md5'
-    server: ''
+    server: 'x.x.x.x'
 
 
 # NOTE(shadower): Do not change this value. The Ansible user is currently
