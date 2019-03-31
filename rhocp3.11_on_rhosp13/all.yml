@@ -21,6 +21,18 @@ openshift_set_node_ip: "True"
 # # NOTE: this is only supported with Flannel SDN yet
 #openstack_private_data_network_name: "openshift-ansible-{{ openshift_openstack_stack_name }}-data-net"
 
+openshift_openstack_common_secgroup_rules:
+- direction: ingress
+  protocol: tcp
+  port_range_min: 10250
+  port_range_max: 10250
+- direction: ingress
+  protocol: icmp
+- direction: ingress
+  protocol: tcp
+  port_range_min: 22
+  port_range_max: 22
+  
 ## Kuryr networking
 # TODO: Allow the user to specify pre-existing subnets for pod and services
 #openshift_openstack_kuryr_service_subnet_cidr: "172.30.0.0/16"
