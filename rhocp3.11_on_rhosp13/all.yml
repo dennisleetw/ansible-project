@@ -194,11 +194,11 @@ rhsub_pool: 'xxx'
 
 # # Roll-your-own DNS
 openshift_openstack_external_nsupdate_keys:
-  public:
-    key_name: 'rndc-key'
-    key_secret: 'xxx'
-    key_algorithm: 'hmac-md5'
-    server: 'x.x.x.x'
+#  public:
+#    key_name: 'rndc-key'
+#    key_secret: 'xxx'
+#    key_algorithm: 'hmac-md5'
+#    server: 'x.x.x.x'
   private:
     key_name: 'rndc-key'
     key_secret: 'xxx'
