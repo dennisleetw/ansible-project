@@ -3,7 +3,6 @@ openshift_openstack_clusterid: "openshift"
 openshift_openstack_public_dns_domain: "dennisleetw.com"
 openshift_openstack_dns_nameservers: [x.x.x.x]
 
-# # Used Hostnames
 # # - set custom hostnames for roles by uncommenting corresponding lines
 #openshift_openstack_master_hostname: "master"
 #openshift_openstack_infra_hostname: "infra-node"
