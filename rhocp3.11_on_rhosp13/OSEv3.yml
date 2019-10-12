@@ -1,5 +1,5 @@
 ---
-## Openshift product versions and repos to install from
+## Openshift product versions and repos to install
 #openshift_deployment_type: origin
 #openshift_repos_enable_testing: true
 openshift_deployment_type: openshift-enterprise
